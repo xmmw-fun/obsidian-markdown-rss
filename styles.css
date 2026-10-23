@@ -1,0 +1,585 @@
+.rss-container {
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+  /* 禁止水平滚动：窄屏下工具栏会自动换行而非溢出 */
+  overflow-x: hidden;
+}
+
+/* 工具栏自适应宽度：
+   - 宽屏：标题与按钮组两端对齐；
+   - 窄屏：自动换行，标题独占一行，按钮组在下一行折叠排列。
+   关键是 flex-wrap + gap，让按钮永不溢出导致横向滚动。 */
+/* 吸顶工具栏（2026-10-22 阿麦要求：刷新/⋯ 无论滚到哪里都看得见、点得到）。
+   sticky 相对 .rss-container 滚动视口；负左右 margin 抵消 container 的 12px
+   内边距，让吸顶背景铺满全宽，滚动内容从 header 底下穿过被完全挡住。 */
+.rss-header {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 -12px 8px -12px;
+  padding: 12px 12px 6px 12px;
+  background: var(--background-primary);
+}
+
+/* 标题 + 状态提示同一行（状态提示如「刷新中...」） */
+.rss-header-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rss-header h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.rss-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  /* 窄屏下按钮组靠左对齐，避免因 space-between 导致按钮间距过大 */
+  justify-content: flex-start;
+}
+
+.rss-header-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  font-size: 13px;
+  /* 允许按钮在极窄屏下缩小，优先保证文本可见 */
+  white-space: nowrap;
+}
+
+.rss-header-actions button:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+/* 刷新：2026-10-22 起唯一外露的主操作，用主题主色突出 */
+.rss-header-actions button.mod-cta {
+  background: var(--interactive-accent, var(--accent-color));
+  color: var(--text-on-accent, white);
+}
+
+.rss-header-actions button.mod-cta:hover {
+  filter: brightness(1.12);
+}
+
+/* ⋯ 溢出菜单触发钮：窄一点，别和刷新抢视觉 */
+.rss-header-actions button.rss-more-btn {
+  padding: 6px 10px;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* 状态提示独立成行，避免与按钮挤压 */
+.rss-status {
+  display: inline-block;
+  min-height: 1em;
+}
+
+.rss-feed-selector {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rss-feed-selector select {
+  flex: 1;
+  min-width: 120px;
+  padding: 4px 8px;
+}
+
+/* 重命名按钮：与下拉框并排，禁用态显灰 */
+.rss-rename-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rss-rename-btn:hover:not(.is-disabled) {
+  background: var(--accent-color);
+  color: white;
+}
+
+.rss-rename-btn.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 重命名 Modal：参考信息样式 */
+.rss-rename-info {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  padding: 8px 10px;
+  border-radius: 4px;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.rss-rename-info div {
+  margin: 2px 0;
+}
+
+.rss-rename-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.rss-filter {
+  margin-bottom: 10px;
+}
+
+.rss-filter input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+}
+
+/* ===== 面板内关键词筛选管理区（2026-10-21 阿麦要求：右侧栏直接管规则） ===== */
+.rss-filter-rules {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  font-size: 12px;
+}
+
+.rss-filter-rules-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.rss-combine-select {
+  font-size: 12px;
+  padding: 2px 4px;
+  max-width: 50%;
+}
+
+.rss-rules-empty {
+  margin: 4px 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ===== 关键词 chip 流式布局（2026-10-22 阿麦要求：一词一行改药丸标签） =====
+   实色 = 生效中；灰描边 = 已停用；点 chip 切换启停；× 删除；
+   include 绿 / exclude 红。flex-wrap 自动换行，词再多也不占整行。 */
+.rss-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 6px;
+}
+
+.rss-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  max-width: 100%;
+}
+
+.rss-chip-kw {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rss-chip.is-include {
+  background: var(--color-green);
+  color: var(--text-on-accent);
+}
+
+.rss-chip.is-exclude {
+  background: var(--color-red);
+  color: var(--text-on-accent);
+}
+
+/* 停用态：透明底 + 描边，与生效态一眼区分 */
+.rss-chip.is-off {
+  background: transparent;
+  border-color: var(--background-modifier-border);
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.rss-chip:hover {
+  filter: brightness(1.1);
+}
+
+.rss-chip.is-off:hover {
+  opacity: 1;
+  background: var(--background-modifier-hover);
+}
+
+/* chip 尾部的删除 × */
+.rss-chip-del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.rss-chip-del:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.rss-rule-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.rss-rule-type-select {
+  flex-shrink: 0;
+  font-size: 12px;
+  padding: 2px 4px;
+  max-width: 72px;
+}
+
+.rss-rule-kw-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  padding: 3px 6px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.rss-rule-add-btn {
+  flex-shrink: 0;
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.rss-article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rss-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+}
+
+.rss-article-card {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rss-article-card:hover {
+  background: var(--background-hover);
+}
+
+.rss-article-card.unread {
+  border-left: 3px solid var(--accent-color);
+}
+
+.rss-article-card.read {
+  opacity: 0.6;
+}
+
+.rss-article-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rss-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.rss-feed-name {
+  color: var(--accent-color);
+}
+
+.rss-description {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-normal);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rss-article-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rss-article-actions button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--background-modifier-hover);
+  color: var(--text-muted);
+}
+
+.rss-article-actions button:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+.rss-article-content {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rss-article-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.rss-article-header h2 {
+  margin: 0 0 8px 0;
+}
+
+.rss-webview-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+.rss-webview-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.rss-article-footer {
+  padding: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+  text-align: right;
+}
+
+.rss-article-footer button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background: var(--accent-color);
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== 右下角浮动滚动按钮（2026-10-22 阿麦要求） =====
+   ↑ 回到顶部（点击时先把当前位置存为「上次看到的位置」）
+   ↓ 回到上次看到的位置
+   position: fixed 相对浏览器窗口——面板在右侧栏时正好贴右下角。 */
+.rss-scroll-btns {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 20;
+}
+
+.rss-scroll-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  transition: all 0.15s ease;
+}
+
+.rss-scroll-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+/* setIcon 插入的 lucide svg：固定尺寸，避免默认大小溢出小圆钮 */
+.rss-scroll-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== Modal 表单样式（2026-10-22 上架整改：消除 el.style 直赋 Error 级违规） ===== */
+.rss-modal-field {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.rss-modal-label {
+  margin: 2px 0 4px;
+}
+
+.rss-modal-select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+.rss-modal-textarea {
+  width: 100%;
+  height: 200px;
+  padding: 8px;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+
+.rss-modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 通用隐藏类：替代 el.style.display 动态切换（no-static-styles-assignment） */
+.is-hidden {
+  display: none;
+}
+
+/* OPML 勾选窗 */
+.opml-toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.opml-footer {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.opml-feed-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+.opml-feed-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.opml-feed-url {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: 8px;
+  word-break: break-all;
+}
+
+/* 面板筛选状态行（原内联 marginRight/color） */
+.rss-filter-status {
+  margin-right: 8px;
+  color: var(--text-muted);
+}
+
+/* 使用说明 Modal：限制宽度，手册长文可读 */
+.rss-help-modal {
+  width: 720px;
+  max-width: 90vw;
+}
+
+.rss-help-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.rss-help-body h1 {
+  font-size: 18px;
+}
+
+.rss-help-body h2 {
+  font-size: 15px;
+  margin-top: 18px;
+}
+
+.rss-help-body pre {
+  background: var(--background-secondary);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 12px;
+  overflow-x: auto;
+}
+
+.rss-help-body code {
+  font-size: 12px;
+}
+
+.rss-help-body table {
+  border-collapse: collapse;
+}
+
+.rss-help-body th,
+.rss-help-body td {
+  border: 1px solid var(--background-modifier-border);
+  padding: 4px 8px;
+}

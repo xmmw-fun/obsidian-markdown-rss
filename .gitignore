@@ -1,0 +1,14 @@
+node_modules/
+main.js
+main.js.map
+dist/
+.obsidian/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 内部文档与开发遗留，不进公开仓库
+docs/
+_rssbuild.txt
+test-feeds.opml
+.workbuddy/
