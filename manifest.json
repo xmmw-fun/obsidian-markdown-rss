@@ -1,6 +1,6 @@
 {
-  "id": "rss-reader",
-  "name": "RSS Reader",
+  "id": "markdown-rss",
+  "name": "Markdown RSS",
   "version": "1.0.0",
   "minAppVersion": "1.7.2",
   "description": "Subscribe to RSS feeds, read articles in a clean side panel, and save highlights to your vault.",

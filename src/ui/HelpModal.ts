@@ -13,7 +13,7 @@ export class HelpModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
     contentEl.addClass('rss-help-modal');
-    contentEl.createEl('h2', { text: 'RSS reader 使用说明' });
+    contentEl.createEl('h2', { text: 'Markdown RSS 使用说明' });
 
     const body = contentEl.createDiv({ cls: 'rss-help-body' });
     // MarkdownRenderer 的 component 参数用于管理渲染产物的生命周期；

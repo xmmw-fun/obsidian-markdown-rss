@@ -19,7 +19,7 @@ export default class RSSReaderPlugin extends Plugin {
       (leaf) => new RSSView(leaf, this.feedManager, this.storageManager)
     );
     
-    this.addRibbonIcon('rss', 'RSS reader', () => {
+    this.addRibbonIcon('rss', 'Markdown RSS', () => {
       void this.openRSSView();
     });
     

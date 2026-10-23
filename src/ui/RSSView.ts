@@ -36,7 +36,7 @@ export class RSSView extends ItemView {
   }
 
   getDisplayText(): string {
-    return 'RSS reader';
+    return 'Markdown RSS';
   }
 
   getIcon(): string {
@@ -81,7 +81,7 @@ export class RSSView extends ItemView {
 
     // 左：标题 + 状态提示（如「刷新中...」），避免用户误以为按钮无反应
     const titleWrap = header.createDiv({ cls: 'rss-header-title' });
-    titleWrap.createEl('h2', { text: 'RSS reader' });
+    titleWrap.createEl('h2', { text: 'Markdown RSS' });
     this.statusEl = titleWrap.createSpan({ cls: 'rss-status', text: '' });
 
     const actions = header.createDiv({ cls: 'rss-header-actions' });

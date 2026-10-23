@@ -1,6 +1,6 @@
 <!-- 发版维护提醒：每次发版必须同步 manifest.json version + versions.json 追加一行；README 仅功能/用法变化时才需要改。 -->
 
-# RSS Reader
+# Markdown RSS
 
 Read your favorite RSS feeds inside a clean Obsidian side panel — subscribe via a plain Markdown file, filter by keywords, and save articles straight into your vault.
 
@@ -17,10 +17,10 @@ Read your favorite RSS feeds inside a clean Obsidian side panel — subscribe vi
 ## Installation
 
 1. Open Obsidian → Settings → Community plugins → Browse.
-2. Search for **RSS Reader** (by XMMW) and install it.
-3. Click the RSS icon in the ribbon (or run the "Open RSS Reader" command) to open the panel.
+2. Search for **Markdown RSS** (by XMMW) and install it.
+3. Click the RSS icon in the ribbon (or run the "Open feed panel" command) to open the panel.
 
-To install a beta version manually, download `main.js`, `manifest.json`, and `styles.css` from the latest release into your vault's `.obsidian/plugins/rss-reader/` folder.
+To install a beta version manually, download `main.js`, `manifest.json`, and `styles.css` from the latest release into your vault's `.obsidian/plugins/markdown-rss/` folder.
 
 ## Usage
 
@@ -54,7 +54,7 @@ Click **Save to note** on an article card; the note is written to your vault (de
 
 ### Built-in user manual
 
-Settings → RSS Reader → **Settings** → **User manual** opens the full manual inside Obsidian.
+Settings → Markdown RSS → **Settings** → **User manual** opens the full manual inside Obsidian.
 
 ## Network access
 
@@ -68,4 +68,4 @@ MIT
 
 ## 中文说明
 
-RSS Reader 把你订阅的源汇总到 Obsidian 侧栏：订阅源清单就是一个纯文本 Markdown 文件（`RSS Feeds.md`），可手编、可同步；行尾加 `| 禁用` 即可停用某个源；支持 OPML 导入、关键词白名单/黑名单筛选（药丸式规则、可选「同时满足/任一满足」组合）、文章一键收藏为笔记，并记住你的阅读位置。完整使用手册已内置于插件：设置 → RSS Reader → 设置 → 使用说明。
+Markdown RSS 把你订阅的源汇总到 Obsidian 侧栏：订阅源清单就是一个纯文本 Markdown 文件（`RSS Feeds.md`），可手编、可同步；行尾加 `| 禁用` 即可停用某个源；支持 OPML 导入、关键词白名单/黑名单筛选（药丸式规则、可选「同时满足/任一满足」组合）、文章一键收藏为笔记，并记住你的阅读位置。完整使用手册已内置于插件：设置 → Markdown RSS → 设置 → 使用说明。

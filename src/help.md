@@ -1,6 +1,6 @@
-# RSS Reader — User Manual
+# Markdown RSS — User Manual
 
-RSS Reader brings your favorite feeds into a side panel of Obsidian. This manual covers everything you need: adding feeds, refreshing, keyword filters, and saving articles to your vault.
+Markdown RSS brings your favorite feeds into a side panel of Obsidian. This manual covers everything you need: adding feeds, refreshing, keyword filters, and saving articles to your vault.
 
 ## 1. Adding subscription feeds
 
@@ -65,7 +65,7 @@ Click **Save to note** on any article card to save it as a Markdown file in your
 
 ## 7. Settings
 
-Settings → RSS Reader → **Settings**:
+Settings → Markdown RSS → **Settings**:
 
 - **General**: auto-refresh interval, max articles per feed.
 - **Feeds**: open the config file, reload configuration, import OPML.

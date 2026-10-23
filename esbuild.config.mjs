@@ -34,10 +34,11 @@ const nodeStubPlugin = {
 
 // 部署到 obsidian 库插件目录；目标可用 RSS_VAULT 环境变量覆盖（默认 E:\Obsidian\vault002-outup-others）。
 // 只拷贝构建产物，绝不覆盖 data.json / vault 根 .env。
-// 注意：目录名 = 插件 ID（2026-10-22 上架整改：obsidian-rss-reader → rss-reader）。
+// 注意：目录名 = 插件 ID（2026-10-22 obsidian-rss-reader → rss-reader；
+// 2026-10-23 rss-reader → markdown-rss：该 ID 被已下架插件占用，目录站禁用复用）。
 const deploy = () => {
   const rssVault = process.env.RSS_VAULT || "E:\\Obsidian\\vault002-outup-others";
-  const pluginDir = path.join(rssVault, ".obsidian", "plugins", "rss-reader");
+  const pluginDir = path.join(rssVault, ".obsidian", "plugins", "markdown-rss");
   try {
     fs.mkdirSync(pluginDir, { recursive: true });
     const artifacts = ["main.js", "manifest.json", "styles.css"];
